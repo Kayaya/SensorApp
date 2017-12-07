@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(sensorEvent.sensor == mfield){
             mfield_values = sensorEvent.values.clone();
         }
+        
         //SensorManager.getRotationMatrix (orientationMatrix, inclinationMatrix, accelerometerValues, magneticFieldValues);
 
 
