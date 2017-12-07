@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             azimuth = magneticFieldValues[0];
             pitch = magneticFieldValues[1];
             roll = magneticFieldValues[2];
-
+            
             //Display the results in the text view
             azimuth_tv.setText(String.valueOf(azimuth));
             pitch_tv.setText(String.valueOf(pitch));
