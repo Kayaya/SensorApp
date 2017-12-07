@@ -11,9 +11,9 @@ import android.widget.TextView;
 import java.lang.reflect.Array;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    Sensor accel, mfield;
-    float[] coordinates = new float[3];
-    float[] mfield_values = new float[3];
+    Sensor accelerometer, magneticField;
+    float[] accelerometerValues = new float[3];
+    float[] magneticFieldValues = new float[3];
     float[] orientation_matrix =  new float[16];
 
     @Override
@@ -24,30 +24,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         SensorManager sensorManager;
         sensorManager = (SensorManager)this.getSystemService(this.SENSOR_SERVICE);
 
-        accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mfield = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
 
-        sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_UI);
-        sensorManager.registerListener(this, mfield, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, magneticField, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        if(sensorEvent.sensor == accel){
+        if(sensorEvent.sensor == accelerometer){
             //Exponential
 
             float x,y,z;
 
-            coordinates = sensorEvent.values.clone();
+            accelerometerValues = sensorEvent.values.clone();
 
             TextView x_coord = (TextView)findViewById(R.id.tv_x);
             TextView y_coord = (TextView)findViewById(R.id.tv_y);
             TextView z_coord = (TextView)findViewById(R.id.tv_z);
 
-            x = coordinates[0];
-            y = coordinates[1];
-            z = coordinates[2];
+            x = accelerometerValues[0];
+            y = accelerometerValues[1];
+            z = accelerometerValues[2];
 
             //Display the results in the text view
 
@@ -55,11 +55,29 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             y_coord.setText(String.valueOf(y));
             z_coord.setText(String.valueOf(z));
         }
-        if(sensorEvent.sensor == mfield){
-            mfield_values = sensorEvent.values.clone();
+        if(sensorEvent.sensor == magneticField){
+
+            float azimuth,pitch,roll;
+
+            magneticFieldValues = sensorEvent.values.clone();
+
+            TextView azimuth_tv = (TextView)findViewById(R.id.tv_azimuth);
+            TextView pitch_tv = (TextView)findViewById(R.id.tv_pitch);
+            TextView roll_tv = (TextView)findViewById(R.id.tv_roll);
+
+            azimuth = magneticFieldValues[0];
+            pitch = magneticFieldValues[1];
+            roll = magneticFieldValues[2];
+
+            //Display the results in the text view
+            azimuth_tv.setText(String.valueOf(azimuth));
+            pitch_tv.setText(String.valueOf(pitch));
+            roll_tv.setText(String.valueOf(roll));
+
+
         }
-        
-        //SensorManager.getRotationMatrix (orientationMatrix, inclinationMatrix, accelerometerValues, magneticFieldValues);
+        //get rotation
+        SensorManager.getRotationMatrix (orientation_matrix, null, accelerometerValues, magneticFieldValues);
 
 
     }

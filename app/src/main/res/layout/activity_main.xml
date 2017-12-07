@@ -22,4 +22,22 @@
         android:layout_height="wrap_content"
         android:text="z" />
 
+    <TextView
+        android:id="@+id/tv_azimuth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="azimuth" />
+
+    <TextView
+        android:id="@+id/tv_pitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="pitch" />
+
+    <TextView
+        android:id="@+id/tv_roll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="roll" />
+
 </LinearLayout>
