@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Sensor accelerometer, magneticField;
     float[] accelerometerValues = new float[3];
     float[] magneticFieldValues = new float[3];
+    float[] orientations = new float[3];
     float[] orientation_matrix =  new float[16];
 
     @Override
@@ -57,27 +58,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         if(sensorEvent.sensor == magneticField){
 
-            float azimuth,pitch,roll;
-
             magneticFieldValues = sensorEvent.values.clone();
-
-            TextView azimuth_tv = (TextView)findViewById(R.id.tv_azimuth);
-            TextView pitch_tv = (TextView)findViewById(R.id.tv_pitch);
-            TextView roll_tv = (TextView)findViewById(R.id.tv_roll);
-
-            azimuth = magneticFieldValues[0];
-            pitch = magneticFieldValues[1];
-            roll = magneticFieldValues[2];
-            
-            //Display the results in the text view
-            azimuth_tv.setText(String.valueOf(azimuth));
-            pitch_tv.setText(String.valueOf(pitch));
-            roll_tv.setText(String.valueOf(roll));
-
 
         }
         //get rotation
         SensorManager.getRotationMatrix (orientation_matrix, null, accelerometerValues, magneticFieldValues);
+        //get the orientation from the matrix
+        SensorManager.getOrientation (orientation_matrix, orientations);
+        // Declare variables to save the azimuth, pitch and roll
+        double azimuth, pitch,roll;
+
+        //Get the values of the azimuth... from the orientations array
+        azimuth = orientations[0]*(180/Math.PI);
+        pitch = orientations[1]*(180/Math.PI);
+        roll = orientations[2]*(180/Math.PI);
+
+        //Get acces to the text view by id
+        TextView azimuth_tv = (TextView)findViewById(R.id.tv_azimuth);
+        TextView pitch_tv = (TextView)findViewById(R.id.tv_pitch);
+        TextView roll_tv = (TextView)findViewById(R.id.tv_roll);
+
+        //set the values to the text views
+        azimuth_tv.setText(String.valueOf(azimuth));
+        pitch_tv.setText(String.valueOf(pitch));
+        roll_tv.setText(String.valueOf(roll));
 
 
     }
