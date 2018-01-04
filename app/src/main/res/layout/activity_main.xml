@@ -39,5 +39,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="roll" />
+    <TextView
+        android:id="@+id/tv_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="counter" />
+
+
+    <TextView
+        android:id="@+id/tv_step_detector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="steps" />
+
 
 </LinearLayout>

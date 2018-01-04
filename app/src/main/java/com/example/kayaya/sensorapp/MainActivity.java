@@ -11,11 +11,14 @@ import android.widget.TextView;
 import java.lang.reflect.Array;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    Sensor accelerometer, magneticField;
+    Sensor accelerometer, magneticField,stepcounter, stepdetector;
     float[] accelerometerValues = new float[3];
     float[] magneticFieldValues = new float[3];
     float[] orientations = new float[3];
     float[] orientation_matrix =  new float[16];
+
+    float[] stepcounterValues = new float[3];
+    float[] stepdetectorValues = new float[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +30,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        stepcounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
+        stepdetector = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
 
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
         sensorManager.registerListener(this, magneticField, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, stepcounter, SensorManager.SENSOR_DELAY_UI);
+
+        sensorManager.registerListener(this, stepdetector, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -61,6 +70,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             magneticFieldValues = sensorEvent.values.clone();
 
         }
+        if(sensorEvent.sensor == stepcounter){
+            stepcounterValues = sensorEvent.values.clone();
+            TextView steptv = (TextView)findViewById(R.id.tv_step);
+            steptv.setText(String.valueOf(stepcounterValues[0]));
+
+        }
+        if(sensorEvent.sensor == stepdetector){
+            stepdetectorValues = sensorEvent.values.clone();
+            TextView steptv = (TextView)findViewById(R.id.tv_step_detector);
+            steptv.setText(String.valueOf(stepdetectorValues[0]+1));
+
+        }
         //get rotation
         SensorManager.getRotationMatrix (orientation_matrix, null, accelerometerValues, magneticFieldValues);
         //get the orientation from the matrix
@@ -84,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         roll_tv.setText(String.valueOf(roll));
 
 
+
+
     }
 
     @Override
@@ -92,3 +115,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 }
+/*
+
+https://developer.android.com/guide/topics/sensors/sensors_motion.html#sensors-motion-stepdetector
+//https://www.packtpub.com/books/content/step-detector-and-step-counters-sensors
+*/
